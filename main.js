@@ -89,15 +89,15 @@ hiome.on('message', function(topic, m, packet) {
 
   if (message['meta'] && message['meta']['type'] === 'occupancy' && message['meta']['source'] === 'gateway') {
     const sensorId = message['meta']['room']
+    // must fetch occupied or empty status before checking if sensorValChanged since that will overwrite old value
+    const occupied = publishOccupiedOrEmpty(sensorId, message['val'])
     // only do something if the occupancy state of the room is changing
     if (!sensorValChanged(sensorId, message['val'])) return
 
     const sensorName = sanitizeName(message['meta']['name'].replace('Occupancy', ''))
     const event_base = 'hiome_' + sensorName + '_'
-    publishEvent(event_base + 'count' + message['val'])
-
-    const occupied = publishOccupiedOrEmpty(sensorId, message['val'])
     if (occupied) publishEvent(event_base + occupied)
+    publishEvent(event_base + 'count' + message['val'])
   } else if (message['meta'] && message['meta']['type'] === 'door' && message['meta']['source'] === 'gateway') {
     if (['closed', 'opened', 'ajar'].indexOf(message['val']) === -1) return
     const sensorId = topic.split('/').pop()
