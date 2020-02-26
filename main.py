@@ -36,7 +36,7 @@ def onMessage(client, userdata, msg):
   elif ifttt_key is not None:
     if not msg.payload or len(msg.payload.strip()) == 0: return
     message = json.loads(msg.payload)
-    if message['meta'] and message['meta']['type'] == 'occupancy' and message['meta']['source'] == 'gateway':
+    if message.get('meta', None) and message['meta'].get('type', None) == 'occupancy' and message['meta'].get('source', None) == 'gateway':
       sensorId = message['meta']['room']
       sensorName = sanitizeName(message['meta']['name'])
       event_name_base = 'hiome_' + sensorName + '_'
@@ -45,7 +45,7 @@ def onMessage(client, userdata, msg):
       else:
         publishEvent(event_name_base + 'occupied')
       publishEvent(event_name_base + 'count' + message['val'])
-    elif message['meta'] and message['meta']['type'] == 'door' and message['meta']['source'] == 'gateway':
+    elif message.get('meta', None) and message['meta'].get('type', None) == 'door' and message['meta'].get('source', None) == 'gateway':
       sensorNames = message['meta']['name'].split(' <-> ')
       sn1 = sanitizeName(sensorNames[0])
       sn2 = sanitizeName(sensorNames[1])
