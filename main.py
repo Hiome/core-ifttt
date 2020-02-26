@@ -5,6 +5,7 @@ import os
 import raven
 import re
 import paho.mqtt.client as mqtt
+import urllib2
 
 with open(os.getenv('UID_FILE', '/sys/class/net/eth0/address'), "r") as file:
   MACHINEID = file.read().strip()
