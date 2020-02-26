@@ -1,0 +1,18 @@
+{
+  "name": "hiome-ifttt",
+  "version": "1.0.0",
+  "description": "IFTTT adapter for Hiome",
+  "main": "main.js",
+  "dependencies": {
+    "mqtt": "^3.0.0",
+    "@sentry/node": "^5.6.2"
+  },
+  "scripts": {
+    "start": "node main.js"
+  },
+  "homepage": "https://gitlab.com/hiome/hiome-ifttt",
+  "repository": {
+    "type": "git",
+    "url": "git://gitlab.com/hiome/hiome-ifttt.git"
+  }
+}
