@@ -1,5 +1,6 @@
 #!/usr/bin/python
 
+import json
 import os
 import raven
 import re
@@ -33,7 +34,8 @@ def onMessage(client, userdata, msg):
   if msg.topic == '_hiome/integrate/ifttt':
     ifttt_key = msg.payload or None
   elif ifttt_key is not None:
-    message = msg.payload
+    if not msg.payload or len(msg.payload.strip()) == 0: return
+    message = json.loads(msg.payload)
     if message['meta'] and message['meta']['type'] == 'occupancy' and message['meta']['source'] == 'gateway':
       sensorId = message['meta']['room']
       sensorName = sanitizeName(message['meta']['name'])
