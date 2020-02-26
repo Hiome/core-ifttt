@@ -63,7 +63,7 @@ function sensorValChanged(sensorId, val) {
 
 // clean out punctuation and spaces from room names
 function sanitizeName(str) {
-  return str.replace(/[^\w\s_\-]/g, "").replace(/\s+/g, " ").trim().toLowerCase()
+  return str.replace(/[^\w\s_\-]/g, "").trim().replace(/\s+/g, "_").toLowerCase()
 }
 
 function publishEvent(event) {
