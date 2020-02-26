@@ -45,7 +45,7 @@ def onMessage(client, userdata, msg):
         publishEvent(event_name_base + 'empty')
       else:
         publishEvent(event_name_base + 'occupied')
-      publishEvent(event_name_base + 'count' + message['val'])
+      publishEvent(event_name_base + 'count' + str(message['val']))
     elif message.get('meta', None) and message['meta'].get('type', None) == 'door' and message['meta'].get('source', None) == 'gateway':
       sensorNames = message['meta']['name'].split(' <-> ')
       sn1 = sanitizeName(sensorNames[0])
