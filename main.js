@@ -68,7 +68,10 @@ function sanitizeName(str) {
 
 function publishEvent(event) {
   if (!data.iftttKey) return
-  https.get('https://maker.ifttt.com/trigger/' + event + '/with/key/' + data.iftttKey)
+  // strip key out of url in case a full URL was provided
+  const kArr = data.iftttKey.split('/')
+  const key = kArr[kArr.length-1]
+  https.get('https://maker.ifttt.com/trigger/' + event + '/with/key/' + key)
 }
 
 const hiome = mqtt.connect('mqtt://localhost:1883')
