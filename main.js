@@ -63,7 +63,7 @@ function sensorValChanged(sensorId, val) {
 
 // clean out punctuation and spaces from room names
 function sanitizeName(str) {
-  return str.replace(/[^\w\s_\-]/g, "").trim().replace(/\s+/g, "_").toLowerCase()
+  return str.replace(/[^\w\s_]/g, "").trim().replace(/\s+/g, "_").toLowerCase()
 }
 
 function publishEvent(event) {
@@ -102,14 +102,11 @@ hiome.on('message', function(topic, m, packet) {
     if (occupied) publishEvent(event_base + occupied)
     publishEvent(event_base + 'count' + message['val'])
   } else if (message['meta'] && message['meta']['type'] === 'door' && message['meta']['source'] === 'gateway') {
-    if (['closed', 'opened', 'ajar'].indexOf(message['val']) === -1) return
+    if (['closed', 'open', 'ajar'].indexOf(message['val']) === -1) return
     const sensorId = topic.split('/').pop()
     // only do something if the door state is changing
     if (!sensorValChanged(sensorId, message['val'])) return
 
-    const sensorNames = message['meta']['name'].split(' <-> ')
-    const sn1 = sanitizeName(sensorNames[0])
-    const sn2 = sanitizeName(sensorNames[1])
-    publishEvent('hiome_' + sn1 + '_' + sn2 + '_door_' + message['val'])
+    publishEvent('hiome_' + sanitizeName(message['meta']['name']) + '_' + message['val'])
   }
 })
